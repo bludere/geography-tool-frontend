@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ExamPlanet</title>
+  <!-- Favicon / App Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon.png">
+  <link rel="shortcut icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png">
+  <meta name="theme-color" content="#10b981">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --accent: #3b82f6;
+      --accent-light: #eff6ff;
+      --border-light: #e0e0e0;
+      --bg: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Roboto", sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      text-align: center;
+      padding-top: 2.5rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      color: #ffffff;
+    }
+
+    header h1 {
+      font-size: 1.9rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0;
+      color: #ffffff;
+    }
+
+    header p {
+      margin-top: 0.5rem;
+      margin-bottom: 0;
+      color: #e5e7eb;
+      font-size: 0.95rem;
+    }
+
+    main {
+      max-width: 68rem;
+      width: 100%;
+      margin: 2rem auto 0;
+      padding: 0 1rem;
+    }
+
+    .card {
+      position: relative;
+      background: #ffffff;
+      border-radius: 1.25rem;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem 1.75rem 1.75rem;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .card-subtitle {
+      margin-top: 0.25rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      margin-top: 1.25rem;
+    }
+
+    .filter-group {
+      min-width: 220px;
+      flex: 1;
+    }
+
+    .filter-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6b7280;
+      margin-bottom: 0.4rem;
+    }
+
+    .theme-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .theme-option {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.85rem;
+      color: #374151;
+      padding: 0.35rem 0.5rem;
+      border-radius: 0.6rem;
+      transition: background-color 150ms ease;
+    }
+
+    .theme-option input {
+      accent-color: var(--accent);
+    }
+
+    .theme-option:hover {
+      background-color: #f9fafb;
+    }
+
+    .theme-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.1rem 0.45rem;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-right: 0.2rem;
+    }
+
+    .theme-pill.t1 { background-color: #3b82f6; }
+    .theme-pill.t2 { background-color: #10b981; }
+    .theme-pill.t3 { background-color: #f97316; }
+
+    .topics-container {
+      margin-top: 0.5rem;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.25rem 0.8rem;
+    }
+
+    @media (min-width: 768px) {
+      .topics-container {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .topic-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      color: #374151;
+    }
+
+    .topic-option input {
+      margin-top: 0.05rem;
+      accent-color: var(--accent);
+    }
+
+    .topic-code {
+      font-weight: 600;
+      margin-right: 0.15rem;
+    }
+
+    .actions-row {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.55rem 0.95rem;
+      border-radius: 0.7rem;
+      border: 1px solid transparent;
+      background-color: var(--accent);
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, opacity 150ms ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background-color: #7096e8;
+    }
+
+    .btn-secondary {
+      background-color: #ffffff;
+      color: #374151;
+      border-color: #d1d5db;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: #1f2937;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .processing-inline {
+      display: none;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .processing-inline.active {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .spinner-small {
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+      border: 2px solid var(--accent);
+      border-top-color: transparent;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .results-shell {
+      max-width: 72rem;
+      width: 100%;
+      margin: 2.5rem auto 0;
+      padding: 0 1rem 2rem;
+      flex: 1;
+    }
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .results-title {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .results-layout {
+      display: flex;
+      gap: 1.25rem;
+      align-items: stretch;
+      height: 60vh;
+      min-height: 320px;
+    }
+
+    @media (max-width: 800px) {
+      .results-layout {
+        flex-direction: column;
+      }
+    }
+
+    .question-list {
+      width: 260px;
+      max-width: 100%;
+      background: #f9fafb;
+      border-radius: 0.9rem;
+      padding: 0.75rem;
+      border: 1px solid #e5e7eb;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    .question-list-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b7280;
+      margin-bottom: 0.5rem;
+    }
+
+    .question-list-empty {
+      font-size: 0.8rem;
+      color: #6b7280;
+      padding: 0.5rem 0.25rem;
+    }
+
+    .question-item {
+      padding: 0.5rem 0.6rem;
+      border-radius: 0.6rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+      margin-bottom: 0.25rem;
+      transition:
+        background-color 120ms ease,
+        color 120ms ease,
+        box-shadow 120ms ease,
+        border-color 120ms ease;
+      background-color: transparent;
+      border: 1px solid transparent;
+    }
+
+    .question-item:hover {
+      background-color: #f3f4f6;
+      border-color: #e5e7eb;
+    }
+
+    .question-item.active {
+      background-color: #ffffff;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.25);
+      color: #111827;
+    }
+
+    .question-item-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .question-item-meta {
+      font-size: 0.72rem;
+      color: #6b7280;
+    }
+
+    .question-item.active .question-item-meta {
+      color: #4b5563;
+    }
+
+    .question-item-topic {
+      font-size: 0.72rem;
+      color: #4f46e5;
+    }
+
+    .question-item.active .question-item-topic {
+      color: #4338ca;
+    }
+
+    .question-viewer {
+      flex: 1;
+      border-radius: 1rem;
+      border: 1px solid var(--border-light);
+      padding: 1rem 1.25rem 1.25rem;
+      background-color: #ffffff;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+      display: flex;
+      flex-direction: column;
+      min-height: 320px;
+    }
+
+    .viewer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .viewer-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .viewer-meta {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .viewer-tags {
+      margin-top: 0.35rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 9999px;
+      background-color: #eef2ff;
+      color: #6158ff;
+    }
+
+    .viewer-body {
+      margin-top: 0.75rem;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background-color: #f9fafb;
+      border-radius: 0.75rem;
+      border: 1px solid #e5e7eb;
+      padding: 0.75rem;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .viewer-body img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .viewer-empty {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    .viewer-footer {
+      margin-top: 0.75rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .viewer-footer .btn {
+      font-size: 0.78rem;
+      padding: 0.45rem 0.85rem;
+      margin-left: 0.5rem;
+    }
+
+    /* Remove hover color effect for View Mark Scheme button */
+    #viewMSBtn:hover {
+      background-color: inherit !important;
+      color: inherit !important;
+      border-color: inherit !important;
+    }
+
+    .no-results-banner {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 0.5rem;
+    }
+
+    footer {
+      margin-top: 1.5rem;
+      padding-bottom: 1.5rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+    header{
+      background-color: #10b981;
+      padding-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Exam Planet</h1>
+    <p>Pick a theme and topic, then explore questions interactively.</p>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2 class="card-title">Choose your theme and topics</h2>
+      <p class="card-subtitle">All questions are ready to explore. Select what you want to practice.</p>
+
+      <div class="filters-row">
+        <!-- Themes -->
+        <div class="filter-group">
+          <div class="filter-label">Themes</div>
+          <div class="theme-list">
+            <label class="theme-option">
+              <input type="checkbox" class="theme-checkbox" value="1" id="theme1">
+              <span>
+                <span class="theme-pill t1">Theme 1</span>
+                Population and settlement
+              </span>
+            </label>
+            <label class="theme-option">
+              <input type="checkbox" class="theme-checkbox" value="2" id="theme2">
+              <span>
+                <span class="theme-pill t2">Theme 2</span>
+                The natural environment
+              </span>
+            </label>
+            <label class="theme-option">
+              <input type="checkbox" class="theme-checkbox" value="3" id="theme3">
+              <span>
+                <span class="theme-pill t3">Theme 3</span>
+                Economic development
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Topics -->
+        <div class="filter-group">
+          <div class="filter-label">Topics</div>
+          <div class="topics-container" id="topicsContainer">
+            <!-- Theme 1 -->
+            <label class="topic-option" data-theme="1">
+              <input type="checkbox" value="1.1 Population dynamics">
+              <span><span class="topic-code">1.1</span>Population dynamics</span>
+            </label>
+            <label class="topic-option" data-theme="1">
+              <input type="checkbox" value="1.2 Migration">
+              <span><span class="topic-code">1.2</span>Migration</span>
+            </label>
+            <label class="topic-option" data-theme="1">
+              <input type="checkbox" value="1.3 Population structure">
+              <span><span class="topic-code">1.3</span>Population structure</span>
+            </label>
+            <label class="topic-option" data-theme="1">
+              <input type="checkbox" value="1.4 Population density and distribution">
+              <span><span class="topic-code">1.4</span>Population density and distribution</span>
+            </label>
+            <label class="topic-option" data-theme="1">
+              <input type="checkbox" value="1.5 Settlements (rural and urban) and service provision">
+              <span><span class="topic-code">1.5</span>Settlements (rural and urban) and service provision</span>
+            </label>
+            <label class="topic-option" data-theme="1">
+              <input type="checkbox" value="1.6 Urban settlements">
+              <span><span class="topic-code">1.6</span>Urban settlements</span>
+            </label>
+            <label class="topic-option" data-theme="1">
+              <input type="checkbox" value="1.7 Urbanisation">
+              <span><span class="topic-code">1.7</span>Urbanisation</span>
+            </label>
+
+            <!-- Theme 2 -->
+            <label class="topic-option" data-theme="2">
+              <input type="checkbox" value="2.1 Earthquakes, volcanoes and plate tectonics">
+              <span><span class="topic-code">2.1</span>Earthquakes, volcanoes and plate tectonics</span>
+            </label>
+            <label class="topic-option" data-theme="2">
+              <input type="checkbox" value="2.2 Rivers">
+              <span><span class="topic-code">2.2</span>Rivers</span>
+            </label>
+            <label class="topic-option" data-theme="2">
+              <input type="checkbox" value="2.3 Coasts">
+              <span><span class="topic-code">2.3</span>Coasts</span>
+            </label>
+            <label class="topic-option" data-theme="2">
+              <input type="checkbox" value="2.4 Weather">
+              <span><span class="topic-code">2.4</span>Weather</span>
+            </label>
+            <label class="topic-option" data-theme="2">
+              <input type="checkbox" value="2.5 Climate and natural vegetation">
+              <span><span class="topic-code">2.5</span>Climate and natural vegetation</span>
+            </label>
+
+            <!-- Theme 3 -->
+            <label class="topic-option" data-theme="3">
+              <input type="checkbox" value="3.1 Development">
+              <span><span class="topic-code">3.1</span>Development</span>
+            </label>
+            <label class="topic-option" data-theme="3">
+              <input type="checkbox" value="3.2 Food production">
+              <span><span class="topic-code">3.2</span>Food production</span>
+            </label>
+            <label class="topic-option" data-theme="3">
+              <input type="checkbox" value="3.3 Industry">
+              <span><span class="topic-code">3.3</span>Industry</span>
+            </label>
+            <label class="topic-option" data-theme="3">
+              <input type="checkbox" value="3.4 Tourism">
+              <span><span class="topic-code">3.4</span>Tourism</span>
+            </label>
+            <label class="topic-option" data-theme="3">
+              <input type="checkbox" value="3.5 Energy">
+              <span><span class="topic-code">3.5</span>Energy</span>
+            </label>
+            <label class="topic-option" data-theme="3">
+              <input type="checkbox" value="3.6 Water">
+              <span><span class="topic-code">3.6</span>Water</span>
+            </label>
+            <label class="topic-option" data-theme="3">
+              <input type="checkbox" value="3.7 Environmental risks of economic development">
+              <span><span class="topic-code">3.7</span>Environmental risks of economic development</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <span id="loadingInline" class="processing-inline">
+          <span class="spinner-small"></span>
+          <span>Loading questions…</span>
+        </span>
+        <button id="clearBtn" class="btn btn-secondary">Clear</button>
+        <button id="searchBtn" class="btn">Find Questions</button>
+      </div>
+    </div>
+  </main>
+
+  <section class="results-shell">
+    <div class="results-header">
+      <h2 class="results-title">Questions</h2>
+    </div>
+    <div class="no-results-banner" id="noResultsText">
+      No questions yet. Choose a theme/topic and hit “Find Questions”.
+    </div>
+    <div class="results-layout">
+      <!-- LEFT: sidebar list -->
+      <aside class="question-list" id="questionList">
+        <div class="question-list-title">Question list</div>
+        <div class="question-list-empty" id="questionListEmpty">No questions loaded.</div>
+      </aside>
+
+      <!-- RIGHT: viewer -->
+      <div class="question-viewer">
+        <div class="viewer-header">
+          <div>
+            <div class="viewer-title" id="viewerTitle">No question selected</div>
+            <div class="viewer-meta" id="viewerMeta"></div>
+            <div class="viewer-tags" id="viewerTags"></div>
+          </div>
+        </div>
+        <div class="viewer-body" id="viewerBody">
+          <div class="viewer-empty" id="viewerEmpty">
+            Select a question from the left sidebar to view it here.
+          </div>
+          <img id="viewerImg" style="display:none;" />
+        </div>
+        <div class="viewer-footer">
+          <button class="btn" id="downloadCurrentBtn" disabled>Download this question</button>
+          <button class="btn btn-secondary" id="viewMSBtn" disabled>View Mark Scheme</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Built for automated exam preparation by Rayyaan Shetty
+  </footer>
+
+  <script>
+    (function () {
+      let ALL_QUESTIONS = [];
+
+      fetch("data.json")
+        .then(res => res.json())
+        .then(data => {
+          ALL_QUESTIONS = data;   
+          console.log("Loaded questions:", ALL_QUESTIONS.length);
+        })
+        .catch(err => console.error("Failed to load questions:", err));
+
+      const themeCheckboxes = document.querySelectorAll(".theme-checkbox");
+      const topicsContainer = document.getElementById("topicsContainer");
+      const searchBtn = document.getElementById("searchBtn");
+      const clearBtn = document.getElementById("clearBtn");
+      const loadingInline = document.getElementById("loadingInline");
+
+      const noResultsText = document.getElementById("noResultsText");
+      const questionList = document.getElementById("questionList");
+      const questionListEmpty = document.getElementById("questionListEmpty");
+
+      const viewerTitle = document.getElementById("viewerTitle");
+      const viewerMeta = document.getElementById("viewerMeta");
+      const viewerTags = document.getElementById("viewerTags");
+      const viewerBody = document.getElementById("viewerBody");
+      const viewerEmpty = document.getElementById("viewerEmpty");
+      const viewerImg = document.getElementById("viewerImg");
+      const downloadCurrentBtn = document.getElementById("downloadCurrentBtn");
+      const viewMSBtn = document.getElementById("viewMSBtn");
+
+      let currentQuestions = [];
+      let currentQuestion = null;
+
+      function setLoading(isLoading) {
+        loadingInline.classList.toggle("active", isLoading);
+        searchBtn.disabled = isLoading;
+      }
+
+      function getSelectedThemes() {
+        const arr = [];
+        themeCheckboxes.forEach(cb => {
+          if (cb.checked) arr.push(cb.value);
+        });
+        return arr;
+      }
+
+      function getSelectedTopics() {
+        const labels = topicsContainer.querySelectorAll(".topic-option");
+        const selected = [];
+        labels.forEach(label => {
+          const input = label.querySelector("input[type='checkbox']");
+          if (input && input.checked) {
+            selected.push(input.value);
+          }
+        });
+        return selected;
+      }
+
+      function clearTopics() {
+        const inputs = topicsContainer.querySelectorAll("input[type='checkbox']");
+        inputs.forEach(i => i.checked = false);
+      }
+
+      function clearThemes() {
+        themeCheckboxes.forEach(cb => cb.checked = false);
+      }
+
+      function syncThemeToTopics(themeValue, checked) {
+        const labels = topicsContainer.querySelectorAll(`.topic-option[data-theme="${themeValue}"]`);
+        labels.forEach(label => {
+          const input = label.querySelector("input[type='checkbox']");
+          if (input) input.checked = checked;
+        });
+      }
+
+      function filterQuestions(themes, topics) {
+        if (themes.length === 0 && topics.length === 0) {
+          return ALL_QUESTIONS.slice();
+        }
+        return ALL_QUESTIONS.filter(q => {
+          if (topics.length > 0) {
+            const hasTag = Array.isArray(q.tags) && topics.some(t => q.tags.includes(t));
+            if (!hasTag) return false;
+          }
+          return true;
+        });
+      }
+
+      function renderQuestionList(questions) {
+        const existingItems = questionList.querySelectorAll(".question-item");
+        existingItems.forEach(el => el.remove());
+
+        if (!questions || questions.length === 0) {
+          questionListEmpty.style.display = "block";
+          return;
+        }
+        questionListEmpty.style.display = "none";
+
+        questions.forEach(q => {
+          const item = document.createElement("div");
+          item.className = "question-item";
+          item.dataset.id = `${q.year}-${q.session}-${q.paper}-${q.variant}-${q.question_number}`;
+
+          const title = document.createElement("div");
+          title.className = "question-item-title";
+          title.textContent = "Question " + q.question_number + " • " + ((q.tags && q.tags[0]) || "");
+          item.appendChild(title);
+
+          const meta = document.createElement("div");
+          meta.className = "question-item-meta";
+          meta.textContent = `${q.paper || ""} • ${q.session || ""} ${q.year || ""} (Variant ${q.variant || ""})`;
+          item.appendChild(meta);
+
+          if (q.tags && q.tags.length > 1) {
+            const topicLine = document.createElement("div");
+            topicLine.className = "question-item-topic";
+            topicLine.textContent = q.tags.slice(1).join(", ");
+            item.appendChild(topicLine);
+          }
+
+          item.addEventListener("click", () => {
+            setCurrentQuestion(q);
+          });
+
+          questionList.appendChild(item);
+        });
+      }
+
+      function highlightActiveInList() {
+        const items = questionList.querySelectorAll(".question-item");
+        items.forEach(item => {
+          if (
+            currentQuestion &&
+            item.dataset.id === `${currentQuestion.year}-${currentQuestion.session}-${currentQuestion.paper}-${currentQuestion.variant}-${currentQuestion.question_number}`
+          ) {
+            item.classList.add("active");
+          } else {
+            item.classList.remove("active");
+          }
+        });
+      }
+
+      function setCurrentQuestion(q) {
+        currentQuestion = q;
+        highlightActiveInList();
+
+        if (!q) {
+          viewerTitle.textContent = "No question selected";
+          viewerMeta.textContent = "";
+          viewerTags.innerHTML = "";
+          viewerEmpty.style.display = "block";
+          viewerImg.style.display = "none";
+          downloadCurrentBtn.disabled = true;
+          viewMSBtn.disabled = true;
+          return;
+        }
+
+        viewerTitle.textContent = "Question " + q.question_number;
+        viewerMeta.textContent = `${q.paper || ""} • ${q.session || ""} ${q.year || ""} (Variant ${q.variant || ""})`;
+
+        viewerTags.innerHTML = "";
+        if (q.tags && q.tags.length > 0) {
+          q.tags.forEach(t => {
+            const tag = document.createElement("span");
+            tag.className = "tag";
+            tag.textContent = t;
+            viewerTags.appendChild(tag);
+          });
+        }
+        const variantFolder = q.variant.toString().slice(-1);
+        q.image_path = "images/" + q.year + "/" + q.session + "/P1_" + variantFolder + "/Q" + q.question_number + ".png";
+        console.log("Image path for question:", q.image_path);
+
+        viewerImg.src = q.image_path || "";
+        viewerImg.style.display = "block";
+        viewerEmpty.style.display = "none";
+
+        downloadCurrentBtn.disabled = false;
+        viewMSBtn.disabled = false;
+      }
+
+      function downloadCurrent() {
+        if (!currentQuestion) return;
+        const link = document.createElement("a");
+        link.href = currentQuestion.image_path ? ("./" + currentQuestion.image_path) : "";
+        const safeTag = (currentQuestion.tags && currentQuestion.tags[0] ? currentQuestion.tags[0] : "Question").replace(/\s+/g, "_");
+        link.download = `Q${currentQuestion.question_number}_${safeTag}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      function viewMarkScheme() {
+        if (!currentQuestion) return;
+
+        const yr = String(currentQuestion.year);
+        const yy = yr.slice(-2);
+        const session = currentQuestion.session.toLowerCase();
+        const variant = currentQuestion.variant;
+        const qnum = currentQuestion.question_number;
+        const fragment = `#:~:text=${qnum}(a)(i)`;
+
+
+        const url =
+          `https://bestexamhelp.com/exam/cambridge-igcse/geography-0460/` +
+          `${yr}/0460_${session}${yy}_ms_${variant}.pdf${fragment}`;
+
+        window.open(url, "_blank");
+      }
+
+
+      function handleSearch() {
+        const themes = getSelectedThemes();
+        const topics = getSelectedTopics();
+
+        setLoading(true);
+
+        currentQuestions = filterQuestions(themes, topics);
+        updateResults();
+        setLoading(false);
+      }
+
+      function updateResults() {
+        if (!currentQuestions.length) {
+          noResultsText.style.display = "block";
+          setCurrentQuestion(null);
+        } else {
+          noResultsText.style.display = "none";
+        }
+
+        renderQuestionList(currentQuestions);
+        if (currentQuestions.length > 0) {
+          setCurrentQuestion(currentQuestions[0]);
+        } else {
+          setCurrentQuestion(null);
+        }
+      }
+
+      searchBtn.addEventListener("click", handleSearch);
+
+      clearBtn.addEventListener("click", () => {
+        clearThemes();
+        clearTopics();
+        currentQuestions = [];
+        updateResults();
+      });
+
+
+      themeCheckboxes.forEach(cb => {
+        cb.addEventListener("change", () => {
+          syncThemeToTopics(cb.value, cb.checked);
+        });
+      });
+
+      downloadCurrentBtn.addEventListener("click", downloadCurrent);
+      viewMSBtn.addEventListener("click", viewMarkScheme);
+
+      updateResults();
+    })();
+  </script>
+  <script>
+    (function() {
+      const colors = ["#f97316", "#3b82f6", "#10b981"];
+      const chosen = colors[Math.floor(Math.random()*colors.length)];
+      document.querySelector("header").style.backgroundColor = chosen;
+    })();
+  </script>
+</body>
+</html>
