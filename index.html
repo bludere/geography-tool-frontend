@@ -471,13 +471,14 @@
 <body>
   <header>
     <h1>Exam Planet</h1>
+    <img src="assets/logo.png" alt="Logo" style="display:block;margin:0.75rem auto 0;width:72px;height:auto;">
     <p>Pick a theme and topic, then explore questions interactively.</p>
   </header>
 
   <main>
     <div class="card">
       <h2 class="card-title">Choose your theme and topics</h2>
-      <p class="card-subtitle">All questions are ready to explore. Select what you want to practice.</p>
+      <p class="card-subtitle">Choose a theme or topic to begin exploring questions.</p>
 
       <div class="filters-row">
         <!-- Themes -->
@@ -653,7 +654,7 @@
     (function () {
       let ALL_QUESTIONS = [];
 
-      fetch("data.json")
+      fetch("https://geography-tool-backend.onrender.com/data")
         .then(res => res.json())
         .then(data => {
           ALL_QUESTIONS = data;   
