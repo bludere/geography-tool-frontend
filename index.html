@@ -477,7 +477,7 @@
   <main>
     <div class="card">
       <h2 class="card-title">Choose your theme and topics</h2>
-      <p class="card-subtitle">Choose a theme or topic to begin exploring questions.</p>
+      <p class="card-subtitle">All questions are ready to explore. Select what you want to practice.</p>
 
       <div class="filters-row">
         <!-- Themes -->
@@ -652,14 +652,37 @@
   <script>
     (function () {
       let ALL_QUESTIONS = [];
+      const R2_BASE = "https://pub-12b6c58b56554c82a1bec5b329985388.r2.dev";
 
-      fetch("https://raw.githubusercontent.com/bludere/geography-tool-backend/main/data.json")
-        .then(res => res.json())
-        .then(data => {
-          ALL_QUESTIONS = data;   
+      async function loadQuestions() {
+        try {
+          setLoading(true);
+          const res = await fetch(`${R2_BASE}/data.json`, { cache: "no-store" });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+
+          // Accept either an array, or an object like { questions: [...] }
+          if (Array.isArray(data)) {
+            ALL_QUESTIONS = data;
+          } else if (data && Array.isArray(data.questions)) {
+            ALL_QUESTIONS = data.questions;
+          } else {
+            ALL_QUESTIONS = [];
+          }
+
           console.log("Loaded questions:", ALL_QUESTIONS.length);
-        })
-        .catch(err => console.error("Failed to load questions:", err));
+
+          // Update UI so list isn't blank after load
+          currentQuestions = ALL_QUESTIONS.slice();
+          updateResults();
+        } catch (err) {
+          console.error("Failed to load questions:", err);
+          noResultsText.style.display = "block";
+          noResultsText.textContent = "Failed to load data.json from Cloudflare. Check console.";
+        } finally {
+          setLoading(false);
+        }
+      }
 
       const themeCheckboxes = document.querySelectorAll(".theme-checkbox");
       const topicsContainer = document.getElementById("topicsContainer");
@@ -681,6 +704,8 @@
       const viewMSBtn = document.getElementById("viewMSBtn");
 
       let currentQuestions = [];
+      // Load questions immediately on page load
+      loadQuestions();
       let currentQuestion = null;
 
       function setLoading(isLoading) {
@@ -820,7 +845,7 @@
           });
         }
         const variantFolder = q.variant.toString().slice(-1);
-        q.image_path = "https://raw.githubusercontent.com/bludere/geography-tool-backend/main/images/" + q.year + "/" + q.session + "/P1_" + variantFolder + "/Q" + q.question_number + ".png";
+        q.image_path = `${R2_BASE}/images/${q.year}/${q.session}/P1_${variantFolder}/Q${q.question_number}.png`;
         console.log("Image path for question:", q.image_path);
 
         viewerImg.src = q.image_path || "";
@@ -834,7 +859,7 @@
       function downloadCurrent() {
         if (!currentQuestion) return;
         const link = document.createElement("a");
-        link.href = currentQuestion.image_path;
+        link.href = currentQuestion.image_path || "";
         const safeTag = (currentQuestion.tags && currentQuestion.tags[0] ? currentQuestion.tags[0] : "Question").replace(/\s+/g, "_");
         link.download = `Q${currentQuestion.question_number}_${safeTag}.png`;
         document.body.appendChild(link);
@@ -906,6 +931,7 @@
 
       downloadCurrentBtn.addEventListener("click", downloadCurrent);
       viewMSBtn.addEventListener("click", viewMarkScheme);
+
 
       updateResults();
     })();
