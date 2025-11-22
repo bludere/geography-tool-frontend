@@ -653,7 +653,7 @@
     (function () {
       let ALL_QUESTIONS = [];
 
-      fetch("https://geography-tool-backend.onrender.com/data")
+      fetch("https://raw.githubusercontent.com/bludere/GeographyToolBackend/data/data.json")
         .then(res => res.json())
         .then(data => {
           ALL_QUESTIONS = data;   
