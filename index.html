@@ -653,11 +653,13 @@
     (function () {
       let ALL_QUESTIONS = [];
       const R2_BASE = "https://pub-12b6c58b56554c82a1bec5b329985388.r2.dev";
+      // CORS proxy Worker (replace YOUR_WORKER_SUBDOMAIN with your Cloudflare subdomain)
+      const DATA_ENDPOINT = "https://geography-tool-worker.rayyaan-shetty.workers.dev/data.json";
 
       async function loadQuestions() {
         try {
           setLoading(true);
-          const res = await fetch(`${R2_BASE}/data.json`, { cache: "no-store" });
+          const res = await fetch(`${DATA_ENDPOINT}?v=${Date.now()}`, { cache: "no-store" });
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
 
