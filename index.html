@@ -820,7 +820,7 @@
           });
         }
         const variantFolder = q.variant.toString().slice(-1);
-        q.image_path = "images/" + q.year + "/" + q.session + "/P1_" + variantFolder + "/Q" + q.question_number + ".png";
+        q.image_path = "https://raw.githubusercontent.com/bludere/geography-tool-backend/main/images/" + q.year + "/" + q.session + "/" + "P1_" + variantFolder + "/" + "Q" + q.question_number + ".png";
         console.log("Image path for question:", q.image_path);
 
         viewerImg.src = q.image_path || "";
@@ -834,7 +834,7 @@
       function downloadCurrent() {
         if (!currentQuestion) return;
         const link = document.createElement("a");
-        link.href = currentQuestion.image_path ? ("./" + currentQuestion.image_path) : "";
+        link.href = currentQuestion.image_path;
         const safeTag = (currentQuestion.tags && currentQuestion.tags[0] ? currentQuestion.tags[0] : "Question").replace(/\s+/g, "_");
         link.download = `Q${currentQuestion.question_number}_${safeTag}.png`;
         document.body.appendChild(link);
