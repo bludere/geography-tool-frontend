@@ -1,0 +1,43 @@
+name: Rebuild data.json
+
+on:
+  workflow_dispatch:        # lets you run manually
+  schedule:
+    - cron: "0 0 1 */3 *"   # runs every 3 months on the 1st at midnight
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run scraper
+      run: python paperscraper.py
+
+    - name: Run PDF proper fixer
+      run: python pdfproper.py
+
+    - name: Run PDF parser (builds data.json)
+      run: python pdfparser.py
+      
+    - name: Run classifier
+      run: python keyword_classifier.py
+
+    - name: Copy data.json to public `data` branch
+      run: |
+        git fetch
+        git checkout data || git checkout --orphan data
+        cp data.json data.json
+        git add data.json
+        git commit -m "Update public data.json" || echo "No changes"
+        git push -u origin data
