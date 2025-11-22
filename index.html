@@ -653,7 +653,7 @@
     (function () {
       let ALL_QUESTIONS = [];
 
-      fetch("https://raw.githubusercontent.com/bludere/geography-tool-backend/data/data.json")
+      fetch("https://raw.githubusercontent.com/bludere/geography-tool-backend/main/data.json")
         .then(res => res.json())
         .then(data => {
           ALL_QUESTIONS = data;   
@@ -820,7 +820,7 @@
           });
         }
         const variantFolder = q.variant.toString().slice(-1);
-        q.image_path = "https://raw.githubusercontent.com/bludere/geography-tool-backend/main/images/" + q.year + "/" + q.session + "/" + "P1_" + variantFolder + "/" + "Q" + q.question_number + ".png";
+        q.image_path = "https://raw.githubusercontent.com/bludere/geography-tool-backend/main/images/" + q.year + "/" + q.session + "/P1_" + variantFolder + "/Q" + q.question_number + ".png";
         console.log("Image path for question:", q.image_path);
 
         viewerImg.src = q.image_path || "";
