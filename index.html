@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -469,6 +471,29 @@
   </style>
 </head>
 <body>
+  <div id="loginGate" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;">
+    <h1 style="font-size:2rem;margin-bottom:1rem;">Exam Planet</h1>
+    <p id="loginMsg" style="margin-bottom:1.5rem;color:#555;">Sign in with your school email</p>
+
+    <input id="emailInput" type="email" placeholder="name@dais.edu.in"
+      style="padding:0.6rem 0.8rem;font-size:1rem;border:1px solid #ccc;border-radius:0.5rem;width:260px;margin-bottom:1rem;">
+
+    <button id="sendOtpBtn"
+      style="padding:0.6rem 1rem;font-size:1rem;border:none;border-radius:0.5rem;background:#3b82f6;color:white;cursor:pointer;margin-bottom:1rem;">
+      Send OTP
+    </button>
+
+    <input id="otpInput" type="text" placeholder="Enter OTP"
+      style="padding:0.6rem 0.8rem;font-size:1rem;border:1px solid #ccc;border-radius:0.5rem;width:260px;margin-bottom:1rem;display:none;">
+
+    <button id="verifyOtpBtn"
+      style="padding:0.6rem 1rem;font-size:1rem;border:none;border-radius:0.5rem;background:#16a34a;color:white;cursor:pointer;display:none;">
+      Verify OTP
+    </button>
+
+    <p id="loginError" style="color:red;margin-top:1rem;display:none;"></p>
+  </div>
+  <div id="appContent" style="display:none;">
   <header>
     <h1>Exam Planet</h1>
     <p>Pick a theme and topic, then explore questions interactively.</p>
@@ -945,5 +970,73 @@
       document.querySelector("header").style.backgroundColor = chosen;
     })();
   </script>
+</script>
+</div>
+<script>
+  const allowedDomain = "@dais.edu.in";
+
+  const sendOtpBtn = document.getElementById("sendOtpBtn");
+  const verifyOtpBtn = document.getElementById("verifyOtpBtn");
+  const otpInput = document.getElementById("otpInput");
+  const loginError = document.getElementById("loginError");
+  const loginGate = document.getElementById("loginGate");
+  const appContent = document.getElementById("appContent");
+
+  sendOtpBtn.addEventListener("click", async () => {
+    const email = document.getElementById("emailInput").value.trim().toLowerCase();
+
+    if (!email.endsWith(allowedDomain)) {
+      loginError.innerText = "Use your school email only.";
+      loginError.style.display = "block";
+      return;
+    }
+
+    loginError.style.display = "none";
+
+    const res = await fetch("https://geography-tool-worker.rayyaan-shetty.workers.dev/send-otp", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ email })
+    });
+
+    if (res.ok) {
+      otpInput.style.display = "block";
+      verifyOtpBtn.style.display = "block";
+      sendOtpBtn.disabled = true;
+      sendOtpBtn.innerText = "OTP Sent";
+    } else {
+      loginError.innerText = "Failed to send OTP.";
+      loginError.style.display = "block";
+    }
+  });
+
+  verifyOtpBtn.addEventListener("click", async () => {
+    const email = document.getElementById("emailInput").value.trim().toLowerCase();
+    const otp = otpInput.value.trim();
+
+    const res = await fetch("https://geography-tool-worker.rayyaan-shetty.workers.dev/verify-otp", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ email, otp })
+    });
+
+    if (res.ok) {
+      loginGate.style.display = "none";
+      appContent.style.display = "block";
+      sessionStorage.setItem("examplanet_user", email);
+    } else {
+      loginError.innerText = "Invalid OTP.";
+      loginError.style.display = "block";
+    }
+  });
+
+  window.addEventListener("load", () => {
+    const saved = sessionStorage.getItem("examplanet_user");
+    if (saved && saved.endsWith(allowedDomain)) {
+      loginGate.style.display = "none";
+      appContent.style.display = "block";
+    }
+  });
+</script>
 </body>
 </html>
