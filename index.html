@@ -34,19 +34,12 @@
       flex-direction: column;
     }
 
-    /* General Header Styles */
     header {
       text-align: center;
       padding-top: 2.5rem;
       padding-left: 1rem;
       padding-right: 1rem;
       color: #ffffff;
-    }
-
-    /* Specific App Header Styling to prevent white-on-white text before JS loads */
-    .app-header {
-      background-color: #10b981; /* Default Fallback Color */
-      padding-bottom: 1.5rem;
     }
 
     header h1 {
@@ -469,348 +462,230 @@
       font-size: 0.8rem;
       color: #9ca3af;
     }
+    header{
+      background-color: #10b981;
+      padding-bottom: 1.5rem;
+    }
   </style>
 </head>
 <body>
-  <!-- LOGIN HEADER -->
-  <header class="login-header" style="background:#10b981;padding:2.5rem 1rem 2rem;text-align:center;">
-    <h1 style="font-size:1.9rem;font-weight:600;color:#fff;margin:0;">Exam Planet</h1>
-    <p style="color:#e5e7eb;font-size:1rem;margin:0.7rem 0 0;">
-      Sign in with your school email to continue
-    </p>
-  </header>
+  <div id="loginGate" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:1rem;background:#ffffff;">
+    <h1 style="font-size:1.9rem;margin-bottom:0.3rem;font-weight:600;color:#111827;">Exam Planet</h1>
+    <p id="loginMsg" style="margin-bottom:2rem;color:#6b7280;font-size:0.95rem;">Sign in with your school email to continue</p>
 
-  <!-- LOGIN MAIN -->
-  <main id="loginMain" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;">
-    <form id="loginForm" style="background:#fff;border-radius:1.1rem;box-shadow:0 2px 24px rgba(59,130,246,0.12);padding:2.2rem 2.1rem 2.2rem 2.1rem;display:flex;flex-direction:column;align-items:center;width:340px;max-width:94vw;">
-      <label for="emailInput" style="font-weight:500;font-size:1rem;align-self:flex-start;margin-bottom:0.4rem;color:#374151;">
-        School Email
-      </label>
-      <input id="emailInput" type="email" required autocomplete="username"
-        placeholder="Enter Email Here"
-        style="padding:0.7rem 0.9rem;font-size:1.08rem;border:1px solid #d1d5db;border-radius:0.6rem;width:100%;margin-bottom:1.15rem;background:#f7fafc;">
+    <div style="background:white;padding:2rem 2.2rem;border-radius:1rem;border:1px solid #e5e7eb;box-shadow:0 4px 12px rgba(0,0,0,0.06);width:340px;max-width:90%;text-align:left;">
+      
+      <label style="font-size:0.85rem;font-weight:600;color:#374151;display:block;margin-bottom:0.4rem;">School Email</label>
+      <input id="emailInput" type="email" placeholder="Enter Email Here"
+        style="padding:0.65rem 0.9rem;font-size:0.95rem;border:1px solid #d1d5db;border-radius:0.5rem;width:100%;margin-bottom:1rem;background:#f9fafb;">
 
-      <button id="sendOtpBtn" type="button"
-        style="width:100%;padding:0.7rem 0;font-size:1.03rem;border:none;border-radius:0.6rem;background:#3b82f6;color:#fff;font-weight:600;cursor:pointer;margin-bottom:1.15rem;transition:background 120ms;">
+      <button id="sendOtpBtn"
+        style="width:100%;padding:0.7rem 1rem;font-size:0.95rem;border:none;border-radius:0.5rem;background:#3b82f6;color:white;cursor:pointer;font-weight:600;">
         Send OTP
       </button>
 
-      <div id="otpSection" style="width:100%;display:none;flex-direction:column;">
-        <label for="otpInput" style="font-weight:500;font-size:1rem;align-self:flex-start;margin-bottom:0.4rem;color:#374151;">
-          Enter OTP
-        </label>
-        <input id="otpInput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6"
-          placeholder="6-digit OTP"
-          style="padding:0.7rem 0.9rem;font-size:1.08rem;border:1px solid #d1d5db;border-radius:0.6rem;width:100%;margin-bottom:1.15rem;background:#f7fafc;">
-        <button id="verifyOtpBtn" type="button"
-          style="width:100%;padding:0.7rem 0;font-size:1.03rem;border:none;border-radius:0.6rem;background:#10b981;color:#fff;font-weight:600;cursor:pointer;transition:background 120ms;">
-          Verify OTP
-        </button>
-      </div>
+      <input id="otpInput" type="text" placeholder="Enter OTP"
+        style="padding:0.65rem 0.9rem;font-size:0.95rem;border:1px solid #d1d5db;border-radius:0.5rem;width:100%;margin-top:1rem;margin-bottom:1rem;background:#f9fafb;display:none;">
 
-      <div id="loginError" style="color:#dc2626;font-size:0.97rem;margin-top:1.1rem;min-height:1.25em;text-align:center;display:none;"></div>
-    </form>
-    <div style="margin-top:1.2rem;text-align:center;font-size:0.82rem;color:#92400e;padding:0.75rem;border:1px solid #fcd34d;background:rgba(255,243,191,0.45);border-radius:0.6rem;max-width:340px;">
+      <button id="verifyOtpBtn"
+        style="width:100%;padding:0.7rem 1rem;font-size:0.95rem;border:none;border-radius:0.5rem;background:#16a34a;color:white;cursor:pointer;font-weight:600;display:none;">
+        Verify OTP
+      </button>
+
+      <p id="loginError" style="color:#dc2626;margin-top:1rem;display:none;font-size:0.85rem;text-align:center;"></p>
+    </div>
+
+    <div style="margin-top:1.5rem;border:1px solid #facc15;background:#fefce8;color:#92400e;padding:0.9rem 1.2rem;border-radius:0.75rem;font-size:0.8rem;max-width:360px;text-align:center;">
       ⚠️ <strong>Restricted Access</strong><br>
       This platform is for internal school use. As per guidelines, it should not be shared externally.
     </div>
+  </div>
+  <div id="appContent" style="display:none;">
+  <header>
+    <h1>Exam Planet</h1>
+    <p>Pick a theme and topic, then explore questions interactively.</p>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2 class="card-title">Choose your theme and topics</h2>
+      <p class="card-subtitle">All questions are ready to explore. Select what you want to practice.</p>
+
+      <div class="filters-row">
+        <!-- Themes -->
+        <div class="filter-group">
+          <div class="filter-label">Themes</div>
+          <div class="theme-list">
+            <label class="theme-option">
+              <input type="checkbox" class="theme-checkbox" value="1" id="theme1">
+              <span>
+                <span class="theme-pill t1">Theme 1</span>
+                Population and settlement
+              </span>
+            </label>
+            <label class="theme-option">
+              <input type="checkbox" class="theme-checkbox" value="2" id="theme2">
+              <span>
+                <span class="theme-pill t2">Theme 2</span>
+                The natural environment
+              </span>
+            </label>
+            <label class="theme-option">
+              <input type="checkbox" class="theme-checkbox" value="3" id="theme3">
+              <span>
+                <span class="theme-pill t3">Theme 3</span>
+                Economic development
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Topics -->
+        <div class="filter-group">
+          <div class="filter-label">Topics</div>
+          <div class="topics-container" id="topicsContainer">
+            <!-- Theme 1 -->
+            <label class="topic-option" data-theme="1">
+              <input type="checkbox" value="1.1 Population dynamics">
+              <span><span class="topic-code">1.1</span>Population dynamics</span>
+            </label>
+            <label class="topic-option" data-theme="1">
+              <input type="checkbox" value="1.2 Migration">
+              <span><span class="topic-code">1.2</span>Migration</span>
+            </label>
+            <label class="topic-option" data-theme="1">
+              <input type="checkbox" value="1.3 Population structure">
+              <span><span class="topic-code">1.3</span>Population structure</span>
+            </label>
+            <label class="topic-option" data-theme="1">
+              <input type="checkbox" value="1.4 Population density and distribution">
+              <span><span class="topic-code">1.4</span>Population density and distribution</span>
+            </label>
+            <label class="topic-option" data-theme="1">
+              <input type="checkbox" value="1.5 Settlements (rural and urban) and service provision">
+              <span><span class="topic-code">1.5</span>Settlements (rural and urban) and service provision</span>
+            </label>
+            <label class="topic-option" data-theme="1">
+              <input type="checkbox" value="1.6 Urban settlements">
+              <span><span class="topic-code">1.6</span>Urban settlements</span>
+            </label>
+            <label class="topic-option" data-theme="1">
+              <input type="checkbox" value="1.7 Urbanisation">
+              <span><span class="topic-code">1.7</span>Urbanisation</span>
+            </label>
+
+            <!-- Theme 2 -->
+            <label class="topic-option" data-theme="2">
+              <input type="checkbox" value="2.1 Earthquakes, volcanoes and plate tectonics">
+              <span><span class="topic-code">2.1</span>Earthquakes, volcanoes and plate tectonics</span>
+            </label>
+            <label class="topic-option" data-theme="2">
+              <input type="checkbox" value="2.2 Rivers">
+              <span><span class="topic-code">2.2</span>Rivers</span>
+            </label>
+            <label class="topic-option" data-theme="2">
+              <input type="checkbox" value="2.3 Coasts">
+              <span><span class="topic-code">2.3</span>Coasts</span>
+            </label>
+            <label class="topic-option" data-theme="2">
+              <input type="checkbox" value="2.4 Weather">
+              <span><span class="topic-code">2.4</span>Weather</span>
+            </label>
+            <label class="topic-option" data-theme="2">
+              <input type="checkbox" value="2.5 Climate and natural vegetation">
+              <span><span class="topic-code">2.5</span>Climate and natural vegetation</span>
+            </label>
+
+            <!-- Theme 3 -->
+            <label class="topic-option" data-theme="3">
+              <input type="checkbox" value="3.1 Development">
+              <span><span class="topic-code">3.1</span>Development</span>
+            </label>
+            <label class="topic-option" data-theme="3">
+              <input type="checkbox" value="3.2 Food production">
+              <span><span class="topic-code">3.2</span>Food production</span>
+            </label>
+            <label class="topic-option" data-theme="3">
+              <input type="checkbox" value="3.3 Industry">
+              <span><span class="topic-code">3.3</span>Industry</span>
+            </label>
+            <label class="topic-option" data-theme="3">
+              <input type="checkbox" value="3.4 Tourism">
+              <span><span class="topic-code">3.4</span>Tourism</span>
+            </label>
+            <label class="topic-option" data-theme="3">
+              <input type="checkbox" value="3.5 Energy">
+              <span><span class="topic-code">3.5</span>Energy</span>
+            </label>
+            <label class="topic-option" data-theme="3">
+              <input type="checkbox" value="3.6 Water">
+              <span><span class="topic-code">3.6</span>Water</span>
+            </label>
+            <label class="topic-option" data-theme="3">
+              <input type="checkbox" value="3.7 Environmental risks of economic development">
+              <span><span class="topic-code">3.7</span>Environmental risks of economic development</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <span id="loadingInline" class="processing-inline">
+          <span class="spinner-small"></span>
+          <span>Loading questions…</span>
+        </span>
+        <button id="clearBtn" class="btn btn-secondary">Clear</button>
+        <button id="searchBtn" class="btn">Find Questions</button>
+      </div>
+    </div>
   </main>
 
-  <script>
-    // LOGIN LOGIC
-    const allowedDomain = "@dais.edu.in";
-    const sendOtpBtn = document.getElementById("sendOtpBtn");
-    const verifyOtpBtn = document.getElementById("verifyOtpBtn");
-    const emailInput = document.getElementById("emailInput");
-    const otpInput = document.getElementById("otpInput");
-    const loginError = document.getElementById("loginError");
-    const otpSection = document.getElementById("otpSection");
-    const loginForm = document.getElementById("loginForm");
-    const loginMain = document.getElementById("loginMain");
-    const appContent = document.getElementById("appContent");
-    const loginHeader = document.querySelector(".login-header");
+  <section class="results-shell">
+    <div class="results-header">
+      <h2 class="results-title">Questions</h2>
+    </div>
+    <div class="no-results-banner" id="noResultsText">
+      No questions yet. Choose a theme/topic and hit “Find Questions”.
+    </div>
+    <div class="results-layout">
+      <!-- LEFT: sidebar list -->
+      <aside class="question-list" id="questionList">
+        <div class="question-list-title">Question list</div>
+        <div class="question-list-empty" id="questionListEmpty">No questions loaded.</div>
+      </aside>
 
-    function showError(msg) {
-      loginError.textContent = msg;
-      loginError.style.display = "block";
-    }
-    function hideError() {
-      loginError.textContent = "";
-      loginError.style.display = "none";
-    }
-
-    function switchToApp() {
-        loginMain.style.display = "none";
-        loginHeader.style.display = "none"; // Hide login header
-        appContent.style.display = "block"; // Show app content
-    }
-
-    sendOtpBtn.addEventListener("click", async () => {
-      const email = emailInput.value.trim().toLowerCase();
-      if (!email.endsWith(allowedDomain)) {
-        showError("Use your school email only.");
-        return;
-      }
-      hideError();
-      sendOtpBtn.disabled = true;
-      sendOtpBtn.textContent = "Sending…";
-      try {
-        const res = await fetch("https://geography-tool-worker.rayyaan-shetty.workers.dev/send-otp", {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({ email })
-        });
-        if (res.ok) {
-          otpSection.style.display = "flex";
-          otpInput.focus();
-          sendOtpBtn.textContent = "OTP Sent";
-        } else {
-          showError("Failed to send OTP.");
-          sendOtpBtn.disabled = false;
-          sendOtpBtn.textContent = "Send OTP";
-        }
-      } catch {
-        showError("Network error. Try again.");
-        sendOtpBtn.disabled = false;
-        sendOtpBtn.textContent = "Send OTP";
-      }
-    });
-
-    verifyOtpBtn.addEventListener("click", async () => {
-      const email = emailInput.value.trim().toLowerCase();
-      const otp = otpInput.value.trim();
-      if (!otp) {
-        showError("Enter the OTP sent to your email.");
-        return;
-      }
-      hideError();
-      verifyOtpBtn.disabled = true;
-      verifyOtpBtn.textContent = "Verifying…";
-      try {
-        const res = await fetch("https://geography-tool-worker.rayyaan-shetty.workers.dev/verify-otp", {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({ email, otp })
-        });
-        if (res.ok) {
-          sessionStorage.setItem("examplanet_user", email);
-          switchToApp();
-        } else {
-          showError("Invalid OTP.");
-          verifyOtpBtn.disabled = false;
-          verifyOtpBtn.textContent = "Verify OTP";
-        }
-      } catch {
-        showError("Network error. Try again.");
-        verifyOtpBtn.disabled = false;
-        verifyOtpBtn.textContent = "Verify OTP";
-      }
-    });
-
-    window.addEventListener("load", () => {
-      const saved = sessionStorage.getItem("examplanet_user");
-      if (saved && saved.endsWith(allowedDomain)) {
-        switchToApp();
-      }
-    });
-  </script>
-
-  <!-- APP CONTENT -->
-  <div id="appContent" style="display:none; flex-direction:column; min-height: 100vh;">
-    <header class="app-header">
-      <h1>Exam Planet</h1>
-      <p>Pick a theme and topic, then explore questions interactively.</p>
-    </header>
-
-    <main>
-      <div class="card">
-        <h2 class="card-title">Choose your theme and topics</h2>
-        <p class="card-subtitle">All questions are ready to explore. Select what you want to practice.</p>
-
-        <div class="filters-row">
-          <!-- Themes -->
-          <div class="filter-group">
-            <div class="filter-label">Themes</div>
-            <div class="theme-list">
-              <label class="theme-option">
-                <input type="checkbox" class="theme-checkbox" value="1" id="theme1">
-                <span>
-                  <span class="theme-pill t1">Theme 1</span>
-                  Population and settlement
-                </span>
-              </label>
-              <label class="theme-option">
-                <input type="checkbox" class="theme-checkbox" value="2" id="theme2">
-                <span>
-                  <span class="theme-pill t2">Theme 2</span>
-                  The natural environment
-                </span>
-              </label>
-              <label class="theme-option">
-                <input type="checkbox" class="theme-checkbox" value="3" id="theme3">
-                <span>
-                  <span class="theme-pill t3">Theme 3</span>
-                  Economic development
-                </span>
-              </label>
-            </div>
-          </div>
-
-          <!-- Topics -->
-          <div class="filter-group">
-            <div class="filter-label">Topics</div>
-            <div class="topics-container" id="topicsContainer">
-              <!-- Theme 1 -->
-              <label class="topic-option" data-theme="1">
-                <input type="checkbox" value="1.1 Population dynamics">
-                <span><span class="topic-code">1.1</span>Population dynamics</span>
-              </label>
-              <label class="topic-option" data-theme="1">
-                <input type="checkbox" value="1.2 Migration">
-                <span><span class="topic-code">1.2</span>Migration</span>
-              </label>
-              <label class="topic-option" data-theme="1">
-                <input type="checkbox" value="1.3 Population structure">
-                <span><span class="topic-code">1.3</span>Population structure</span>
-              </label>
-              <label class="topic-option" data-theme="1">
-                <input type="checkbox" value="1.4 Population density and distribution">
-                <span><span class="topic-code">1.4</span>Population density and distribution</span>
-              </label>
-              <label class="topic-option" data-theme="1">
-                <input type="checkbox" value="1.5 Settlements (rural and urban) and service provision">
-                <span><span class="topic-code">1.5</span>Settlements (rural and urban) and service provision</span>
-              </label>
-              <label class="topic-option" data-theme="1">
-                <input type="checkbox" value="1.6 Urban settlements">
-                <span><span class="topic-code">1.6</span>Urban settlements</span>
-              </label>
-              <label class="topic-option" data-theme="1">
-                <input type="checkbox" value="1.7 Urbanisation">
-                <span><span class="topic-code">1.7</span>Urbanisation</span>
-              </label>
-
-              <!-- Theme 2 -->
-              <label class="topic-option" data-theme="2">
-                <input type="checkbox" value="2.1 Earthquakes, volcanoes and plate tectonics">
-                <span><span class="topic-code">2.1</span>Earthquakes, volcanoes and plate tectonics</span>
-              </label>
-              <label class="topic-option" data-theme="2">
-                <input type="checkbox" value="2.2 Rivers">
-                <span><span class="topic-code">2.2</span>Rivers</span>
-              </label>
-              <label class="topic-option" data-theme="2">
-                <input type="checkbox" value="2.3 Coasts">
-                <span><span class="topic-code">2.3</span>Coasts</span>
-              </label>
-              <label class="topic-option" data-theme="2">
-                <input type="checkbox" value="2.4 Weather">
-                <span><span class="topic-code">2.4</span>Weather</span>
-              </label>
-              <label class="topic-option" data-theme="2">
-                <input type="checkbox" value="2.5 Climate and natural vegetation">
-                <span><span class="topic-code">2.5</span>Climate and natural vegetation</span>
-              </label>
-
-              <!-- Theme 3 -->
-              <label class="topic-option" data-theme="3">
-                <input type="checkbox" value="3.1 Development">
-                <span><span class="topic-code">3.1</span>Development</span>
-              </label>
-              <label class="topic-option" data-theme="3">
-                <input type="checkbox" value="3.2 Food production">
-                <span><span class="topic-code">3.2</span>Food production</span>
-              </label>
-              <label class="topic-option" data-theme="3">
-                <input type="checkbox" value="3.3 Industry">
-                <span><span class="topic-code">3.3</span>Industry</span>
-              </label>
-              <label class="topic-option" data-theme="3">
-                <input type="checkbox" value="3.4 Tourism">
-                <span><span class="topic-code">3.4</span>Tourism</span>
-              </label>
-              <label class="topic-option" data-theme="3">
-                <input type="checkbox" value="3.5 Energy">
-                <span><span class="topic-code">3.5</span>Energy</span>
-              </label>
-              <label class="topic-option" data-theme="3">
-                <input type="checkbox" value="3.6 Water">
-                <span><span class="topic-code">3.6</span>Water</span>
-              </label>
-              <label class="topic-option" data-theme="3">
-                <input type="checkbox" value="3.7 Environmental risks of economic development">
-                <span><span class="topic-code">3.7</span>Environmental risks of economic development</span>
-              </label>
-            </div>
+      <!-- RIGHT: viewer -->
+      <div class="question-viewer">
+        <div class="viewer-header">
+          <div>
+            <div class="viewer-title" id="viewerTitle">No question selected</div>
+            <div class="viewer-meta" id="viewerMeta"></div>
+            <div class="viewer-tags" id="viewerTags"></div>
           </div>
         </div>
-
-        <div class="actions-row">
-          <span id="loadingInline" class="processing-inline">
-            <span class="spinner-small"></span>
-            <span>Loading questions…</span>
-          </span>
-          <button id="clearBtn" class="btn btn-secondary">Clear</button>
-          <button id="searchBtn" class="btn">Find Questions</button>
+        <div class="viewer-body" id="viewerBody">
+          <div class="viewer-empty" id="viewerEmpty">
+            Select a question from the left sidebar to view it here.
+          </div>
+          <img id="viewerImg" style="display:none;" />
+        </div>
+        <div class="viewer-footer">
+          <button class="btn" id="downloadCurrentBtn" disabled>Download this question</button>
+          <button class="btn btn-secondary" id="viewMSBtn" disabled>View Mark Scheme</button>
         </div>
       </div>
-    </main>
+    </div>
+  </section>
 
-    <section class="results-shell">
-      <div class="results-header">
-        <h2 class="results-title">Questions</h2>
-      </div>
-      <div class="no-results-banner" id="noResultsText">
-        No questions yet. Choose a theme/topic and hit “Find Questions”.
-      </div>
-      <div class="results-layout">
-        <!-- LEFT: sidebar list -->
-        <aside class="question-list" id="questionList">
-          <div class="question-list-title">Question list</div>
-          <div class="question-list-empty" id="questionListEmpty">No questions loaded.</div>
-        </aside>
-
-        <!-- RIGHT: viewer -->
-        <div class="question-viewer">
-          <div class="viewer-header">
-            <div>
-              <div class="viewer-title" id="viewerTitle">No question selected</div>
-              <div class="viewer-meta" id="viewerMeta"></div>
-              <div class="viewer-tags" id="viewerTags"></div>
-            </div>
-          </div>
-          <div class="viewer-body" id="viewerBody">
-            <div class="viewer-empty" id="viewerEmpty">
-              Select a question from the left sidebar to view it here.
-            </div>
-            <img id="viewerImg" style="display:none;" />
-          </div>
-          <div class="viewer-footer">
-            <button class="btn" id="downloadCurrentBtn" disabled>Download this question</button>
-            <button class="btn btn-secondary" id="viewMSBtn" disabled>View Mark Scheme</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer>
-      Built for automated exam preparation by Rayyaan Shetty. All papers are property of Cambridge Assesment International Education.
-      <div style="margin-top:1.2rem;font-size:0.82rem;color:#6b7280; text-align:center;">
-        <strong>Restricted Access</strong><br>
-        This platform is reserved for internal school use in accordance with Cambridge guidelines and may not be shared externally.
-      </div>
-      <div style="margin-top:1rem;padding:0.9rem 1rem;border-radius:0.6rem;background:#f3f4f6;border:1px solid #d1d5db;color:#4b5563;font-size:0.82rem;">
-        <strong>Restricted Access Notice</strong><br>
-        This platform is strictly for internal school use in accordance with Cambridge guidelines. Please do not share access or content externally.
-      </div>
-    </footer>
-  </div>
+  <footer>
+    Built for automated exam preparation by Rayyaan Shetty
+  </footer>
 
   <script>
     (function () {
       let ALL_QUESTIONS = [];
       const R2_BASE = "https://pub-12b6c58b56554c82a1bec5b329985388.r2.dev";
-      // CORS proxy Worker
+      // CORS proxy Worker (replace YOUR_WORKER_SUBDOMAIN with your Cloudflare subdomain)
       const DATA_ENDPOINT = "https://geography-tool-worker.rayyaan-shetty.workers.dev/data.json";
 
       async function loadQuestions() {
@@ -1036,6 +911,7 @@
         const qnum = currentQuestion.question_number;
         const fragment = `#:~:text=${qnum}(a)(i)`;
 
+
         const url =
           `https://bestexamhelp.com/exam/cambridge-igcse/geography-0460/` +
           `${yr}/0460_${session}${yy}_ms_${variant}.pdf${fragment}`;
@@ -1080,6 +956,7 @@
         updateResults();
       });
 
+
       themeCheckboxes.forEach(cb => {
         cb.addEventListener("change", () => {
           syncThemeToTopics(cb.value, cb.checked);
@@ -1089,19 +966,84 @@
       downloadCurrentBtn.addEventListener("click", downloadCurrent);
       viewMSBtn.addEventListener("click", viewMarkScheme);
 
+
       updateResults();
     })();
   </script>
   <script>
     (function() {
-      // Color randomization specifically for the App Header, not the Login Header
       const colors = ["#f97316", "#3b82f6", "#10b981"];
       const chosen = colors[Math.floor(Math.random()*colors.length)];
-      const appHeader = document.querySelector(".app-header");
-      if(appHeader) {
-          appHeader.style.backgroundColor = chosen;
-      }
+      document.querySelector("header").style.backgroundColor = chosen;
     })();
   </script>
+</script>
+</div>
+<script>
+  const allowedDomain = "@dais.edu.in";
+
+  const sendOtpBtn = document.getElementById("sendOtpBtn");
+  const verifyOtpBtn = document.getElementById("verifyOtpBtn");
+  const otpInput = document.getElementById("otpInput");
+  const loginError = document.getElementById("loginError");
+  const loginGate = document.getElementById("loginGate");
+  const appContent = document.getElementById("appContent");
+
+  sendOtpBtn.addEventListener("click", async () => {
+    const email = document.getElementById("emailInput").value.trim().toLowerCase();
+
+    if (!email.endsWith(allowedDomain)) {
+      loginError.innerText = "Use your school email only.";
+      loginError.style.display = "block";
+      return;
+    }
+
+    loginError.style.display = "none";
+
+    const res = await fetch("https://geography-tool-worker.rayyaan-shetty.workers.dev/send-otp", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ email })
+    });
+
+    if (res.ok) {
+      otpInput.style.display = "block";
+      verifyOtpBtn.style.display = "block";
+      sendOtpBtn.disabled = true;
+      sendOtpBtn.innerText = "OTP Sent";
+    } else {
+      loginError.innerText = "Failed to send OTP.";
+      loginError.style.display = "block";
+    }
+  });
+
+  verifyOtpBtn.addEventListener("click", async () => {
+    const email = document.getElementById("emailInput").value.trim().toLowerCase();
+    const otp = otpInput.value.trim();
+
+    const res = await fetch("https://geography-tool-worker.rayyaan-shetty.workers.dev/verify-otp", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ email, otp })
+    });
+
+    if (res.ok) {
+      loginGate.style.display = "none";
+      appContent.style.display = "block";
+      sessionStorage.setItem("examplanet_user", email);
+    } else {
+      loginError.innerText = "Invalid OTP.";
+      loginError.style.display = "block";
+    }
+  });
+
+  window.addEventListener("load", () => {
+    const saved = sessionStorage.getItem("examplanet_user");
+    if (saved && saved.endsWith(allowedDomain)) {
+      loginGate.style.display = "none";
+      appContent.style.display = "block";
+    }
+  });
+</script>
 </body>
 </html>
